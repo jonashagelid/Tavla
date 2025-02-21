@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.apollo)
 }
 
 android {
@@ -39,6 +40,18 @@ android {
     }
 }
 
+apollo {
+    service("service") {
+        packageName.set("com.example.tavla")
+        introspection {
+            endpointUrl.set("https://api.entur.io/journey-planner/v3/graphql")
+            headers.put("Content-Type", "application/json")
+            headers.put("ET-Client-Name", "jonashagelid-tavla")
+            schemaFile.set(file("src/main/graphql/schema.graphqls"))
+        }
+    }
+}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -49,6 +62,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.apollo.runtime)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
