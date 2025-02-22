@@ -47,7 +47,7 @@ apollo {
             endpointUrl.set("https://api.entur.io/journey-planner/v3/graphql")
             headers.put("Content-Type", "application/json")
             headers.put("ET-Client-Name", "jonashagelid-tavla")
-            schemaFile.set(file("src/main/graphql/schema.json"))
+            schemaFile.set(file("src/main/graphql/schema.json.graphqls"))
         }
     }
 }
