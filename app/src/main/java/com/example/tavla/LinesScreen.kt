@@ -197,7 +197,8 @@ fun LinesScreen(
                                                 }
                                             }
                                             Row(
-                                                modifier = Modifier.weight(1f)
+                                                modifier = Modifier.weight(1f),
+                                                horizontalArrangement = Arrangement.Center,
                                             ) {
                                                 Box(
                                                     modifier = Modifier

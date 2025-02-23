@@ -90,12 +90,12 @@ class ViewModel (private val geocoderApi: GeocoderApi) : ViewModel() {
 
     fun getCategoryColor(category: String): Color {
         return when (category) {
-            "Buss" -> Color(0xFFD32F2F) // Warm Red
-            "Tog" -> Color(0xFF1976D2) // Medium Blue
-            "Flyplass" -> Color(0xFFC2185B) // Rich Pink
-            "Ferge" -> Color(0xFF0097A7) // Teal Blue
-            "T-bane", "Trikk" -> Color(0xFF388E3C) // Earthy Green
-            else -> Color(0xFF757575) // Medium Gray
+            "Buss" -> Color(0xFFD32F2F)
+            "Tog" -> Color(0xFF1976D2)
+            "Flyplass" -> Color(0xFFC2185B)
+            "Ferge" -> Color(0xFF0097A7)
+            "T-bane", "Trikk" -> Color(0xFF388E3C)
+            else -> Color(0xFF757575)
         }
     }
 
