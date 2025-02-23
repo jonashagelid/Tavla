@@ -1,6 +1,7 @@
 package com.example.tavla
 
 
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.api.ApolloResponse
@@ -74,6 +75,27 @@ class ViewModel (private val geocoderApi: GeocoderApi) : ViewModel() {
             "airport" -> "Flyplass"
             "liftStation" -> "Heis?"
             else -> "Annet"
+        }
+    }
+    fun sortTransportMode(transportMode: String?): String {
+        return when (transportMode) {
+            "bus", "coach", "trolleybus" -> "Buss"
+            "rail", "monorail", "funicular" -> "Tog"
+            "air" -> "Flyplass"
+            "water" -> "Ferge"
+            "metro", "tram", "cableway" -> "T-bane"
+            else -> "Annet"
+        }
+    }
+
+    fun getCategoryColor(category: String): Color {
+        return when (category) {
+            "Buss" -> Color(0xFFD32F2F) // Warm Red
+            "Tog" -> Color(0xFF1976D2) // Medium Blue
+            "Flyplass" -> Color(0xFFC2185B) // Rich Pink
+            "Ferge" -> Color(0xFF0097A7) // Teal Blue
+            "T-bane", "Trikk" -> Color(0xFF388E3C) // Earthy Green
+            else -> Color(0xFF757575) // Medium Gray
         }
     }
 

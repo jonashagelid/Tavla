@@ -74,9 +74,11 @@ fun SearchScreen(navController: NavController, viewModel: ViewModel) {
                                 LazyRow {
                                     items(
                                         categories) { category ->
+
+                                        val categoryColor = viewModel.getCategoryColor(category)
                                         Box(
                                             modifier = Modifier
-                                                .background(Color.Black, shape = RoundedCornerShape(8.dp))
+                                                .background(categoryColor, shape = RoundedCornerShape(8.dp))
                                                 .padding(4.dp)
                                         ) {
                                             Text(
@@ -95,3 +97,5 @@ fun SearchScreen(navController: NavController, viewModel: ViewModel) {
         }
     }
 }
+
+

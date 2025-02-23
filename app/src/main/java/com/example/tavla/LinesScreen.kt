@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.tavla.ui.theme.TavlaTheme
 import java.time.ZonedDateTime
@@ -66,17 +67,29 @@ fun LinesScreen(
                 if (departuresByLine.keys.size > 1) {
                     LazyRow {
                         items(departuresByLine.keys.toList()) { line ->
+
+                            val transportMode = departuresByLine[line]?.firstOrNull()
+                                ?.serviceJourney?.journeyPattern?.line?.transportMode
+
+                            val category = viewModel.sortTransportMode(
+                                transportMode.toString()
+                            )
+                            val backgroundColor = viewModel.getCategoryColor(category)
+                            val isSelected = selectedLine == line
                             Box(
                                 modifier = Modifier
-                                    .fillMaxWidth()
                                     .background(
-                                        if (selectedLine == line) Color.Blue else Color.Black,
+                                        if (isSelected) Color.White else backgroundColor,
                                         shape = RoundedCornerShape(8.dp)
                                     )
                                     .clickable { viewModel.selectLine(line) }
-                                    .padding(8.dp)
+                                    .padding(if(isSelected) 12.dp else 8.dp)
                             ) {
-                                Text(text = line)
+                                Text(
+                                    text = line,
+                                    color = if (isSelected) Color.Black else Color.White,
+                                    fontSize = if (isSelected) 24.sp else 16.sp
+                                )
                             }
                             Spacer(modifier = Modifier.width(8.dp))
                         }
@@ -88,19 +101,47 @@ fun LinesScreen(
                     departuresByLine[line]?.firstOrNull()?.let { firstCall ->
                         val lineName = firstCall.serviceJourney.journeyPattern?.line?.name
                         val transportMode = firstCall.serviceJourney.journeyPattern?.line?.transportMode
+                        val category = viewModel.sortTransportMode(transportMode.toString())
+                        val backgroundColor = viewModel.getCategoryColor(category)
 
-                        Column(
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 16.dp)
+                                .padding(horizontal = 16.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(
-                                text = "$line - $lineName ($transportMode)",
-                                style = MaterialTheme.typography.headlineSmall
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
+                            Box(
+                                modifier = Modifier
+                                    .background(
+                                        backgroundColor,
+                                        shape = RoundedCornerShape(8.dp)
+                                    )
+                                    .padding(12.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = line,
+                                    fontSize = 24.sp,
+                                    color = Color.White
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(8.dp))
 
-                            Row(
+                            Column {
+                                Text(
+                                    text = lineName ?: "Unknown Line",
+                                    fontSize = 20.sp
+                                )
+                                Text(
+                                    text = "($category)",
+                                    fontSize = 16.sp,
+                                    color = Color.Gray
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
@@ -115,7 +156,7 @@ fun LinesScreen(
                                     .padding(vertical = 8.dp),
                                 color = Color.Gray
                             )
-                        }
+
                     }
 
                     selectedLine?.let { line ->
@@ -152,7 +193,7 @@ fun LinesScreen(
                                                         textDecoration = TextDecoration.LineThrough,
                                                         color = Color.Red
                                                     )
-                                                    Text(text = expectedTime, color = Color.Green)
+                                                    Text(text = expectedTime, color = Color(0xFF43A047))
                                                 }
                                             }
                                             Row(
@@ -162,7 +203,7 @@ fun LinesScreen(
                                                     modifier = Modifier
                                                         .size(12.dp)
                                                         .background(
-                                                            if (call.realtime) Color.Green else Color.Red,
+                                                            if (call.realtime) Color(0xFF43A047) else Color.Red,
                                                             shape = CircleShape
                                                         )
                                                         .align(Alignment.CenterVertically)
