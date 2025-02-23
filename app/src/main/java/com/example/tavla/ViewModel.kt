@@ -28,7 +28,15 @@ class ViewModel (private val geocoderApi: GeocoderApi) : ViewModel() {
                     launch {
                         try {
                             val response: StopPlacesResponse = geocoderApi.autocomplete(query)
-                            _stops.value = response.features ?: emptyList()
+                            _stops.value = response.features?.map { feature ->
+                                feature.copy(
+                                    properties = feature.properties?.copy(
+                                        category = feature.properties.category
+                                            ?.map { sortCategories(it) }
+                                            ?.distinct()
+                                    )
+                                )
+                            } ?: emptyList()
                         } catch (e: Exception) {
                             e.printStackTrace()
                             _stops.value = emptyList()
@@ -43,6 +51,19 @@ class ViewModel (private val geocoderApi: GeocoderApi) : ViewModel() {
 
     fun onSearchStringChanged(newValue: String) {
         _searchString.value = newValue
+    }
+
+    private fun sortCategories(category: String): String {
+        return when (category) {
+            "onstreetBus", "busStation", "coachStation" -> "Buss"
+            "onstreetTram", "tramStation" -> "Trikk"
+            "railStation", "vehicleRailInterchange" -> "Tog"
+            "metroStation" -> "T-bane"
+            "harbourPort", "ferryPort", "ferryStop" -> "Ferge"
+            "airport" -> "Flyplass"
+            "liftStation" -> "Heis?"
+            else -> "Annet"
+        }
     }
 
 }

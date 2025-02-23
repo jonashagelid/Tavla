@@ -12,7 +12,8 @@ interface GeocoderApi {
     @GET("geocoder/v1/autocomplete")
     suspend fun autocomplete(
         @Query("text") query: String,
-        @Query("size") size: Int = 10
+        @Query("size") size: Int = 10,
+        @Query("layers") layers: String = "venue"
     ): StopPlacesResponse
 
     companion object {

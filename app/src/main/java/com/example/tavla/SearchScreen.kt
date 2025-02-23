@@ -7,9 +7,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 
 
 @Composable
@@ -21,7 +21,7 @@ fun SearchScreen(viewModel: ViewModel, modifier: Modifier = Modifier) {
         modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally) {
+        ) {
 
         Spacer(modifier = Modifier.height(100.dp))
         TextField(
@@ -34,8 +34,15 @@ fun SearchScreen(viewModel: ViewModel, modifier: Modifier = Modifier) {
         LazyColumn {
             items(stops) { stop ->
                 val name = stop.properties?.label ?: "Empty value"
+                val categories = stop.properties?.category ?: emptyList()
 
+                Spacer(modifier = Modifier.height(16.dp))
                 Text(text = name)
+                LazyRow {
+                    items(
+                    categories) { category ->
+                        Text(text = category, modifier = Modifier.padding(end = 8.dp))                    }
+                }
             }
         }
     }
