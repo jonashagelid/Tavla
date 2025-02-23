@@ -68,6 +68,7 @@ dependencies {
     implementation(libs.retrofit.gson)
     implementation(libs.moshi.core)
     implementation(libs.moshi.kotlin)
+    implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -8,11 +8,7 @@ query StopPlace($id: String!){
             aimedDepartureTime
             expectedArrivalTime
             expectedDepartureTime
-            actualArrivalTime
-            actualDepartureTime
             date
-            forBoarding
-            forAlighting
             destinationDisplay {
                 frontText
             }

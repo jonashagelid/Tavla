@@ -13,52 +13,68 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBar
+import androidx.navigation.NavController
+import com.example.tavla.ui.theme.TavlaTheme
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchScreen(viewModel: ViewModel, modifier: Modifier = Modifier) {
+fun SearchScreen(navController: NavController, viewModel: ViewModel) {
     val query by viewModel.searchString.collectAsState()
     val stops by viewModel.stops.collectAsState()
-
-    Column(
-        modifier = Modifier
-        .fillMaxWidth()
-        .padding(16.dp),
+    TavlaTheme {
+        Scaffold (
+            topBar = {
+                TopAppBar(
+                    title = { Text("Tavla") },
+                )
+            }
         ) {
-
-        Spacer(modifier = Modifier.height(100.dp))
-        TextField(
-            value = query,
-            onValueChange = { newValue -> viewModel.onSearchStringChanged(newValue) },
-            label = { Text("Søk etter stoppesteder") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        LazyColumn {
-            items(stops) { stop ->
-                val name = stop.properties?.label ?: "Empty value"
-                val categories = stop.properties?.category ?: emptyList()
-                Card(
-                    modifier = Modifier
+            paddingValues ->
+            Column(
+                modifier = Modifier
                     .fillMaxWidth()
-                    .clickable {
-                        println("Clicked on stop: $name")
-                    }
-                    .padding(8.dp),
-                    elevation = CardDefaults.cardElevation(4.dp)){
-                    Column(
-                        modifier = Modifier.padding(16.dp)
-                    ) {
-                        Text(text = name)
-                        LazyRow {
-                            items(
-                                categories) { category ->
-                                Text(text = category, modifier = Modifier.padding(end = 8.dp))                    }
+                    .padding(paddingValues)
+                   ,
+            ) {
+
+                Spacer(modifier = Modifier.height(25.dp))
+                TextField(
+                    value = query,
+                    onValueChange = { newValue -> viewModel.onSearchStringChanged(newValue) },
+                    label = { Text("Søk etter stoppesteder") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                LazyColumn {
+                    items(stops) { stop ->
+                        val name = stop.properties?.label ?: "Empty value"
+                        val categories = stop.properties?.category ?: emptyList()
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    navController.navigate("lines")
+                                    println("Clicked on stop: $name")
+                                }
+                                .padding(8.dp),
+                            elevation = CardDefaults.cardElevation(4.dp)){
+                            Column(
+                                modifier = Modifier.padding(16.dp)
+                            ) {
+                                Text(text = name)
+                                LazyRow {
+                                    items(
+                                        categories) { category ->
+                                        Text(text = category, modifier = Modifier.padding(end = 8.dp))                    }
+                                }
+                            }
                         }
                     }
-
                 }
-
             }
         }
     }

@@ -10,6 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.tavla.network.GeocoderApi
 import com.example.tavla.ui.theme.TavlaTheme
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 
 class MainActivity : ComponentActivity() {
    private val geocoderApi = GeocoderApi.create()
@@ -26,11 +29,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            TavlaTheme {
-                Scaffold { paddingValues ->
-                    SearchScreen(viewModel = viewModel, modifier = Modifier.padding(paddingValues))
+            val navController = rememberNavController()
+
+                NavHost(navController = navController, startDestination = "search") {
+                    composable("search") { SearchScreen(navController, viewModel) }
+                    composable("lines") { LinesScreen(navController, viewModel) }
                 }
-            }
+
         }
     }
 }
