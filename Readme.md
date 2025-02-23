@@ -20,24 +20,25 @@ Antakelser og forbedringer
   * Løsning: Splitter string på ":" og velger siste index, denne løsningen treffer ikke alltid og trenger utbedring.
 
 
+```
 main/
-│── graphql/                          # GraphQL filer
-│   │── schema.json.graphqls          # GraphQL schema (komplett med schema generation oopsie i navnet)
-│   │── StopPlace.graphql             # GraphQL query
+│── graphql/                      # GraphQL filer
+│   │── schema.json.graphqls      # GraphQL schema (inkluderer en feil i navnet)
+│   │── StopPlace.graphql         # GraphQL query
 │
 │── java/
 │   │── com/example/tavla/
-│       │── data/                      # Datamodeller
-│       │   │── StopPlaceResponse.kt   # Datamodell for Retrofit respons
+│       │── data/                 # Datamodeller
+│       │   │── StopPlaceResponse.kt  # Datamodell for Retrofit respons
 │       │
-│       │── network/                   # API clients (Retrofit & Apollo)
+│       │── network/              # API-klienter (Retrofit & Apollo)
 │       │   │── ApolloClient.kt
 │       │   │── GeocoderApi.kt
 │       │
-│       │── ui/theme/                  # UI Theme
+│       │── ui/theme/              # UI-tema
 │       │
-│       │── LinesScreen.kt             # Oversikt over linjer og avganger for en stasjon/et stopp
-│       │── MainActivity.kt            # Main - instansierer VievModellen
-│       │── SearchScreen.kt            # Søkesjerm for stoppesteder
-│       │── ViewModel.kt               # Datahåndtering og logikk. Liten app, det holder med en.
-
+│       │── LinesScreen.kt         # Oversikt over linjer og avganger for et stopp
+│       │── MainActivity.kt        # Instansierer ViewModel
+│       │── SearchScreen.kt        # Søkeside for stoppesteder
+│       │── ViewModel.kt           # Datahåndtering og logikk (kun én ViewModel pga liten app)
+```
