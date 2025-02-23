@@ -4,12 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.lifecycle.ViewModelProvider
 import com.example.tavla.network.GeocoderApi
-import com.example.tavla.ui.theme.TavlaTheme
-import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -33,7 +29,11 @@ class MainActivity : ComponentActivity() {
 
                 NavHost(navController = navController, startDestination = "search") {
                     composable("search") { SearchScreen(navController, viewModel) }
-                    composable("lines") { LinesScreen(navController, viewModel) }
+                    composable("lines/{stopId}") { backStackEntry ->
+                        val stopId = backStackEntry.arguments?.getString("stopId") ?: return@composable
+                        LinesScreen(stopId, navController, viewModel) { navController.popBackStack() }
+                    }
+
                 }
 
         }

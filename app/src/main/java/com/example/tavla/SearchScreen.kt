@@ -53,11 +53,13 @@ fun SearchScreen(navController: NavController, viewModel: ViewModel) {
                     items(stops) { stop ->
                         val name = stop.properties?.label ?: "Empty value"
                         val categories = stop.properties?.category ?: emptyList()
+                        val stopId = stop.properties?.id ?: "Empty value"
+
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    navController.navigate("lines")
+                                    navController.navigate("lines/$stopId")
                                     println("Clicked on stop: $name")
                                 }
                                 .padding(8.dp),
