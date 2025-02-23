@@ -22,9 +22,14 @@ class ViewModel (private val geocoderApi: GeocoderApi) : ViewModel() {
     private val _stops = MutableStateFlow<List<StopPlaceFeature>>(emptyList())
     val stops: StateFlow<List<StopPlaceFeature>> = _stops.asStateFlow()
 
-
     private val _stopDetails = MutableStateFlow<ApolloResponse<StopPlaceQuery.Data>?>(null)
     val stopDetails: StateFlow<ApolloResponse<StopPlaceQuery.Data>?> = _stopDetails.asStateFlow()
+
+    private var _departuresByLine = MutableStateFlow<Map<String, List<StopPlaceQuery.EstimatedCall>>>(emptyMap())
+    val departuresByLine: StateFlow<Map<String, List<StopPlaceQuery.EstimatedCall>>> = _departuresByLine.asStateFlow()
+
+    private val _selectedLine = MutableStateFlow<String?>(null)
+    val selectedLine: StateFlow<String?> = _selectedLine.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -79,6 +84,16 @@ class ViewModel (private val geocoderApi: GeocoderApi) : ViewModel() {
                     .query(StopPlaceQuery(id))
                     .execute()
                 _stopDetails.value = response
+
+                response.data?.stopPlace?.estimatedCalls?.let { calls ->
+                    val callsByLine: Map<String, List<StopPlaceQuery.EstimatedCall>> = calls
+                        .groupBy { it.serviceJourney.journeyPattern?.line?.id?.split(":")?.lastOrNull() ?: "Unknown" }
+
+                    _departuresByLine.value = callsByLine
+                    _selectedLine.value = callsByLine.keys.firstOrNull()
+                }
+
+
             } catch (e: Exception) {
                 e.printStackTrace()
                 _stopDetails.value = null
@@ -86,5 +101,7 @@ class ViewModel (private val geocoderApi: GeocoderApi) : ViewModel() {
         }
     }
 
-
+    fun selectLine(line: String) {
+        _selectedLine.value = line
+    }
 }

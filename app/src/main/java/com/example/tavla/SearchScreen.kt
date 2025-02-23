@@ -1,5 +1,6 @@
 package com.example.tavla
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,11 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import com.example.tavla.ui.theme.TavlaTheme
 
@@ -71,7 +74,18 @@ fun SearchScreen(navController: NavController, viewModel: ViewModel) {
                                 LazyRow {
                                     items(
                                         categories) { category ->
-                                        Text(text = category, modifier = Modifier.padding(end = 8.dp))                    }
+                                        Box(
+                                            modifier = Modifier
+                                                .background(Color.Black, shape = RoundedCornerShape(8.dp))
+                                                .padding(4.dp)
+                                        ) {
+                                            Text(
+                                                text = category,
+                                                color = Color.White,
+                                            )
+                                        }
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                    }
                                 }
                             }
                         }
