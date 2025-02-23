@@ -9,10 +9,14 @@ import com.example.tavla.data.StopPlaceFeature
 import com.example.tavla.data.StopPlacesResponse
 import com.example.tavla.network.ApolloClient
 import com.example.tavla.network.GeocoderApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
+import java.net.URL
 
 class ViewModel (private val geocoderApi: GeocoderApi) : ViewModel() {
 
@@ -126,4 +130,5 @@ class ViewModel (private val geocoderApi: GeocoderApi) : ViewModel() {
     fun selectLine(line: String) {
         _selectedLine.value = line
     }
+
 }
