@@ -1,6 +1,7 @@
 package com.example.tavla
 
 
+
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,17 +10,14 @@ import com.example.tavla.data.StopPlaceFeature
 import com.example.tavla.data.StopPlacesResponse
 import com.example.tavla.network.ApolloClient
 import com.example.tavla.network.GeocoderApi
-import kotlinx.coroutines.Dispatchers
+import com.example.tavla.network.OpenRouteApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.json.JSONObject
-import java.net.URL
 
-class ViewModel (private val geocoderApi: GeocoderApi) : ViewModel() {
 
+class ViewModel (private val geocoderApi: GeocoderApi, ) : ViewModel() {
 
     private val _searchString = MutableStateFlow("")
     val searchString: StateFlow<String> = _searchString.asStateFlow()
@@ -35,6 +33,16 @@ class ViewModel (private val geocoderApi: GeocoderApi) : ViewModel() {
 
     private val _selectedLine = MutableStateFlow<String?>(null)
     val selectedLine: StateFlow<String?> = _selectedLine.asStateFlow()
+
+    private val _userLocation = MutableStateFlow<Pair<Double, Double>?>(null)
+    val userLocation: StateFlow<Pair<Double, Double>?> = _userLocation
+
+    private val _stopDurations = MutableStateFlow<Map<String, String>>(emptyMap())
+    val stopDurations: StateFlow<Map<String, String>> = _stopDurations
+
+    fun setUserLocation(latitude: Double, longitude: Double) {
+        _userLocation.value = Pair(latitude, longitude)
+    }
 
     init {
         viewModelScope.launch {
@@ -129,6 +137,21 @@ class ViewModel (private val geocoderApi: GeocoderApi) : ViewModel() {
 
     fun selectLine(line: String) {
         _selectedLine.value = line
+    }
+
+    fun fetchWalkingDurationForStops(stopId: String, longitude: Double, latitude: Double) {
+        viewModelScope.launch {
+            userLocation.value?.let { userLoc ->
+                val userLat = userLoc.first
+                val userLon = userLoc.second
+                val result = OpenRouteApi.getWalkingDistance(userLat, userLon, latitude, longitude)
+                result?.let { (_, durationText) ->
+                    _stopDurations.value = _stopDurations.value.toMutableMap().apply {
+                        put(stopId, durationText)
+                    }
+                }
+            }
+        }
     }
 
 }
