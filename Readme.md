@@ -14,6 +14,7 @@ Funksjonalitet
 * Søk etter stoppesteder (Rest API - Retrofit)
 * Hente linjer og avganger fra et stoppested (GraphQL API - Apollo)
 * Enkel fargekoding for linjer basert på transport metode
+* Lokasjonsdata og avstandsberegning (OpenRoute API) - Ikke tilgjengelig i main branch, bytt til navigation for å teste dette
 
 Antakelser og forbedringer
 * Linjenavn (linjekode) kommer som en del av en string fra API-et
@@ -34,6 +35,7 @@ main/
 │       │── network/                    # API-klienter (Retrofit & Apollo)
 │       │   │── ApolloClient.kt
 │       │   │── GeocoderApi.kt
+│       │   │── OpenRouteApi.kt         # UI-tema - Experimentell, egen branch
 │       │
 │       │── ui/theme/                   # UI-tema
 │       │
