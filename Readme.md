@@ -14,7 +14,9 @@ Funksjonalitet
 * Søk etter stoppesteder (Rest API - Retrofit)
 * Hente linjer og avganger fra et stoppested (GraphQL API - Apollo)
 * Enkel fargekoding for linjer basert på transport metode
-* Lokasjonsdata og avstandsberegning (OpenRoute API) - Ikke tilgjengelig i main branch, bytt til navigation for å teste dette
+* Lokasjonsdata og avstandsberegning (OpenRoute API) - 
+  * Dette krever API-nøkkel fra openrouteservice.org, for en versjon uten dette kravet bytt til notimestamps branchen
+  * Api nøkkel legges i secret.properties
 
 Antakelser og forbedringer
 * Linjenavn (linjekode) kommer som en del av en string fra API-et
